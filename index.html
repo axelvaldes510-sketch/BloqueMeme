@@ -54,7 +54,6 @@ nav a:hover{color:#65e879}
 footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25px;color:#777}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;justify-content:center;align-items:center;padding:15px;z-index:2000}
 .modal.visible{display:flex}
-.boton-x-panel{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:8px;border:1px solid #444;background:#191919;color:#fff;font-size:22px;line-height:1;cursor:pointer}.boton-x-panel:hover{background:#333;color:#65e879}
 .ventana{position:relative;width:100%;max-width:490px;max-height:90vh;overflow-y:auto;background:#101010;border:1px solid #38c85b;border-radius:13px;padding:24px;text-align:center}
 .ventana h2{margin-bottom:12px}.ventana>p{color:#bbb;line-height:1.5;font-size:14px;margin-bottom:13px}
 .campo-clave,.campo-admin,.admin-select{width:100%;margin:8px 0 12px}
@@ -150,7 +149,6 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 </div></div>
 
 <div class="modal" id="modalAdmin"><div class="ventana">
-  <button class="boton-x-panel" onclick="cerrarPanelAdmin()" title="Cerrar panel" aria-label="Cerrar panel">×</button>
   <h2>⚙️ Panel de administración</h2><p>Administra los mods y los destacados de BloqueMeme.</p>
   <span class="admin-etiqueta">⭐ CONFIGURACIÓN DE MODS DESTACADOS</span>
   <div class="admin-opcion"><label><input type="radio" name="modoDestacado" value="manual"><span>👤 Manual: yo elijo el mod.</span></label></div>
@@ -214,6 +212,7 @@ function normalizarRutaImagen(ruta){
   valor=valor.replace(/^imagenes\//i,"Imágenes/");
   return valor;
 }
+
 const modsIniciales=[
   {nombre:"Portal Gun Add-On 1.0",categoria:"ratas",imagen:"Imágenes/portal-gun.jpg",descripcion:"¡Viaja entre portales y explora Minecraft de una manera diferente!",formato:"MCADDON",tamano:"No especificado",requisitos:"Minecraft Bedrock. Versión exacta por confirmar.",descarga:"https://www.mediafire.com/file/0nt74iodybjszr9/Portal_Gun_Add-On_1.0.mcaddon/file"},
   {nombre:"BACKROOMS by XP_games",categoria:"terror",imagen:"Imágenes/backrooms.jfif",descripcion:"Explora los misteriosos Backrooms en Minecraft Bedrock.",formato:"MCADDON",tamano:"87 MB",requisitos:"Minecraft Bedrock. Versión exacta por confirmar.",descarga:"https://www.mediafire.com/file/0z5gh55qexo9rg4/BACKROOMS_by_XP_games_%2528latest_version%2529.mcaddon/file"},
@@ -288,7 +287,7 @@ function mostrarBloqueo(){
   function actualizarContador(){const restante=Math.max(0,obtenerFinBloqueo()-Date.now());if(restante<=0){clearInterval(intervaloBloqueo);intervaloBloqueo=null;localStorage.removeItem("bm_admin_intentos");localStorage.removeItem("bm_admin_bloqueado_hasta");capa.classList.remove("visible");document.getElementById("errorClave").style.display="none";return;}contador.textContent=String(Math.floor(restante/60000)).padStart(2,"0")+":"+String(Math.floor((restante%60000)/1000)).padStart(2,"0");}
   actualizarContador();if(intervaloBloqueo)clearInterval(intervaloBloqueo);intervaloBloqueo=setInterval(actualizarContador,250);
 }
-function abrirAccesoAdmin(){if(esAdmin){abrirPanelAdmin();return;}document.getElementById("claveIngresada").value="";document.getElementById("errorClave").style.display="none";document.getElementById("modalAcceso").classList.add("visible");mostrarBloqueo();if(!estaBloqueado())document.getElementById("claveIngresada").focus();}
+function abrirAccesoAdmin(){document.getElementById("claveIngresada").value="";document.getElementById("errorClave").style.display="none";document.getElementById("modalAcceso").classList.add("visible");mostrarBloqueo();if(!estaBloqueado())document.getElementById("claveIngresada").focus();}
 function mostrarSaludoAdmin(){
   const fondo=document.getElementById("saludoAdmin"),palabra=document.getElementById("saludoPalabra");fondo.classList.add("visible");palabra.textContent="¡Bienvenido!";palabra.classList.add("visible");
   setTimeout(()=>{palabra.classList.remove("visible");setTimeout(()=>{palabra.textContent="¡Creador!";palabra.classList.add("visible");},700);},1300);
@@ -337,7 +336,6 @@ function mostrarListaAdmin(){
   const c=document.getElementById("listaAdminMods");if(!mods.length){c.innerHTML="<p>No hay mods publicados.</p>";return;}
   c.innerHTML=mods.map(m=>`<div class="admin-mod-item"><strong style="color:#65e879;display:block;margin-bottom:7px">${escaparHTML(m.nombre)}</strong><span style="color:#999;font-size:12px">${escaparHTML(m.categoria)}</span><br><button class="boton-verde" onclick="editarMod('${m.id}')">✏️ Editar</button> <button class="boton-cerrar" onclick="eliminarMod('${m.id}')">🗑️ Eliminar</button></div>`).join("");
 }
-function cerrarPanelAdmin(){cerrarModal("modalAdmin");}
 async function cerrarSesionAdmin(){await supabaseClient.auth.signOut();sesionAdmin=null;esAdmin=false;cerrarModal("modalAdmin");alert("Sesión de administrador cerrada.");}
 function cerrarModal(id){document.getElementById(id).classList.remove("visible");}
 function escaparHTML(t){return String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
