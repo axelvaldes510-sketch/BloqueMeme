@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloqueMeme - Mods de Minecraft</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    background:#000;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    padding:12px 7%;
+    background:#080808;
+    border-bottom:1px solid #222;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#65e879;
+    font-size:23px;
+    font-weight:bold;
+}
+
+.logo-img{
+    width:55px;
+    height:55px;
+    object-fit:contain;
+}
+
+.admin-gear{
+    background:#151515;
+    border:1px solid #333;
+    color:#65e879;
+    border-radius:9px;
+    width:38px;
+    height:38px;
+    cursor:pointer;
+    font-size:20px;
+    transition:.2s;
+}
+
+.admin-gear:hover{
+    background:#203b26;
+    border-color:#65e879;
+    transform:rotate(30deg);
+}
+
+nav{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+    font-size:14px;
+}
+
+nav a:hover{color:#65e879}
+
+.hero{
+    text-align:center;
+    padding:55px 20px 35px;
+}
+
+.hero h1{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.verde{color:#65e879}
+.hero p{color:#aaa}
+
+.contenido{padding:25px 7% 55px}
+
+.seccion-titulo{
+    font-size:23px;
+    margin-bottom:18px;
+}
+
+.destacados-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:15px;
+    margin-bottom:35px;
+}
+
+.destacado{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    background:#101010;
+    border:1px solid #38a94f;
+    border-radius:13px;
+    padding:16px;
+}
+
+.destacado img{
+    width:220px;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:9px;
+}
+
+.destacado-info{flex:1}
+
+.etiqueta{
+    display:inline-block;
+    color:#65e879;
+    font-size:11px;
+    border:1px solid #287c3c;
+    border-radius:20px;
+    padding:5px 10px;
+    margin-bottom:10px;
+}
+
+.destacado h3{
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.destacado p{
+    color:#aaa;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:12px;
+}
+
+.categorias{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:15px;
+    margin-bottom:40px;
+}
+
+.categoria-card{
+    background:#101010;
+    border:1px solid #292929;
+    border-radius:11px;
+    padding:20px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.categoria-card:hover{
+    border-color:#65e879;
+    transform:translateY(-3px);
+}
+
+.categoria-card h3{
+    color:#65e879;
+    margin-bottom:8px;
+}
+
+.categoria-card p{
+    color:#aaa;
+    font-size:13px;
+}
+
+.herramientas{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.buscador,.filtro{
+    background:#101010;
+    border:1px solid #333;
+    color:white;
+    padding:12px;
+    border-radius:8px;
+    outline:none;
+}
+
+.buscador{
+    flex:1;
+    min-width:190px;
+}
+
+.filtro{min-width:150px}
+
+.buscador:focus,.filtro:focus{
+    border-color:#65e879;
+}
+
+.mods-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,250px));
+    gap:16px;
+    margin-top:20px;
+}
+
+.mod-card{
+    background:#101010;
+    border:1px solid #292929;
+    border-radius:12px;
+    padding:12px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.mod-card:hover{
+    border-color:#65e879;
+    transform:translateY(-3px);
+}
+
+.mod-imagen{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:8px;
+    margin-bottom:12px;
+    display:block;
+}
+
+.mod-card h3{
+    color:#65e879;
+    font-size:16px;
+    margin-bottom:9px;
+}
+
+.mod-card p{
+    color:#aaa;
+    font-size:12px;
+    line-height:1.5;
+    margin-bottom:7px;
+}
+
+.mod-meta{color:#888!important}
+
+.descargar{
+    display:block;
+    text-align:center;
+    background:#38a94f;
+    color:white;
+    padding:9px;
+    border-radius:7px;
+    font-size:13px;
+    font-weight:bold;
+    text-decoration:none;
+    margin-top:12px;
+}
+
+.descargar:hover{background:#287c3c}
+
+.favorito{
+    background:#191919;
+    border:1px solid #444;
+    color:white;
+    border-radius:7px;
+    padding:7px 10px;
+    cursor:pointer;
+    margin-top:9px;
+    width:100%;
+}
+
+.favorito.activo{
+    color:#ff6b85;
+    border-color:#ff6b85;
+}
+
+.rating{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin-top:9px;
+}
+
+.estrella{
+    color:#555;
+    background:transparent;
+    border:none;
+    font-size:19px;
+    cursor:pointer;
+}
+
+.estrella.seleccionada{color:#ffd34e}
+
+.rating-texto{
+    color:#999;
+    font-size:11px;
+    margin-left:5px;
+}
+
+.sin-resultados{
+    color:#888;
+    margin-top:20px;
+    display:none;
+}
+
+.novedades{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.novedad{
+    background:#101010;
+    border:1px solid #292929;
+    border-radius:10px;
+    padding:17px;
+}
+
+.novedad h3{
+    color:#65e879;
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.novedad p{
+    color:#aaa;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.pagina{
+    display:none;
+    padding:35px 7% 60px;
+    min-height:400px;
+}
+
+.pagina.activa{display:block}
+
+.volver{
+    color:#65e879;
+    background:transparent;
+    border:1px solid #38a94f;
+    border-radius:7px;
+    padding:9px 15px;
+    cursor:pointer;
+    margin-bottom:25px;
+}
+
+footer{
+    background:#080808;
+    border-top:1px solid #222;
+    text-align:center;
+    padding:25px;
+    color:#777;
+}
+
+/* VENTANAS */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+    z-index:2000;
+}
+
+.modal.visible{display:flex}
+
+.ventana{
+    position:relative;
+    width:100%;
+    max-width:470px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#101010;
+    border:1px solid #38c85b;
+    border-radius:13px;
+    padding:25px;
+    text-align:center;
+}
+
+.ventana h2{margin-bottom:12px}
+
+.ventana p{
+    color:#bbb;
+    line-height:1.5;
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.campo-clave,.campo-admin{
+    width:100%;
+    background:#080808;
+    color:white;
+    border:1px solid #444;
+    border-radius:8px;
+    padding:12px;
+    outline:none;
+    margin:8px 0 12px;
+}
+
+.campo-clave:focus,.campo-admin:focus{
+    border-color:#65e879;
+}
+
+.boton-verde{
+    background:#38a94f;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:10px 17px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.boton-verde:hover{background:#287c3c}
+
+.boton-cerrar{
+    background:#191919;
+    color:#ccc;
+    border:1px solid #444;
+    border-radius:8px;
+    padding:10px 17px;
+    cursor:pointer;
+}
+
+.mensaje-error{
+    color:#ff6565!important;
+    font-size:12px!important;
+    display:none;
+}
+
+.admin-opcion{
+    text-align:left;
+    background:#181818;
+    border:1px solid #333;
+    border-radius:9px;
+    padding:13px;
+    margin:10px 0;
+}
+
+.admin-opcion:hover{border-color:#65e879}
+
+.admin-opcion label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    cursor:pointer;
+}
+
+.admin-opcion input{accent-color:#65e879}
+
+.admin-etiqueta{
+    color:#65e879;
+    font-size:12px;
+    margin-top:17px;
+    display:block;
+    text-align:left;
+}
+
+.admin-select{
+    width:100%;
+    background:#080808;
+    color:white;
+    border:1px solid #444;
+    border-radius:8px;
+    padding:11px;
+    margin:10px 0 16px;
+}
+
+.botones-modal{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:12px;
+    flex-wrap:wrap;
+}
+
+.admin-separador{
+    border:0;
+    border-top:1px solid #333;
+    margin:24px 0;
+}
+
+.admin-form{text-align:left}
+
+.admin-form label{
+    color:#bbb;
+    font-size:12px;
+    display:block;
+    margin-top:10px;
+}
+
+.admin-form textarea{
+    resize:vertical;
+    min-height:65px;
+}
+
+.admin-ayuda{
+    font-size:11px!important;
+    color:#888!important;
+    text-align:left;
+    margin-top:10px;
+}
+
+/* BIENVENIDA */
+
+.bienvenida{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+    z-index:1000;
+}
+
+.bienvenida .ventana{max-width:460px}
+
+.oficial{
+    display:inline-block;
+    color:#65e879;
+    border:1px solid #287c3c;
+    border-radius:20px;
+    padding:5px 13px;
+    font-size:12px;
+    margin-bottom:18px;
+}
+
+.clon{color:#ff6565}
+
+.nota{
+    font-size:12px!important;
+    color:#888!important;
+    margin-top:15px;
+}
+
+/* BLOQUEO EXCLUSIVO DE LA VENTANA DE CONTRASEÑA */
+
+#modalAcceso .ventana{
+    position:relative;
+    overflow:hidden;
+}
+
+.bloqueo-total{
+    position:absolute;
+    inset:0;
+    z-index:10;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:14px;
+    padding:24px;
+    text-align:center;
+    background:rgba(0,0,0,.98);
+    border-radius:13px;
+}
+
+.bloqueo-total.visible{display:flex}
+
+.bloqueo-x{
+    width:90px;
+    height:90px;
+    border:5px solid #ff3434;
+    border-radius:50%;
+    color:#ff3434;
+    font-size:70px;
+    line-height:80px;
+    font-weight:bold;
+    box-shadow:0 0 35px rgba(255,35,35,.35);
+    animation:pulsoX 1.5s ease-in-out infinite;
+}
+
+.bloqueo-total h2{
+    color:#ff4545;
+    font-size:24px;
+}
+
+.bloqueo-total p{
+    color:#ccc;
+    max-width:350px;
+    line-height:1.5;
+}
+
+#contadorBloqueo{
+    color:#ff5555;
+    font-size:23px;
+    font-weight:bold;
+}
+
+@keyframes pulsoX{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.06)}
+}
+
+/* SALUDOS DEL ADMINISTRADOR */
+
+.saludo-admin{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.94);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .7s ease,visibility .7s ease;
+}
+
+.saludo-admin.visible{
+    opacity:1;
+    visibility:visible;
+}
+
+.saludo-admin-contenido{
+    text-align:center;
+    background:#101010;
+    border:1px solid #38c85b;
+    border-radius:15px;
+    padding:35px 45px;
+    box-shadow:0 0 35px rgba(56,200,91,.18);
+    min-width:260px;
+}
+
+.saludo-palabra{
+    font-size:30px;
+    color:#65e879;
+    opacity:0;
+    transition:opacity .8s ease;
+}
+
+.saludo-palabra.visible{opacity:1}
+
+@media(max-width:650px){
+    header{flex-direction:column}
+    nav{justify-content:center}
+    .hero h1{font-size:29px}
+    .destacado{
+        flex-direction:column;
+        align-items:stretch;
+    }
+    .destacado img{width:100%}
+    .mods-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+    .mod-card{padding:9px}
+    .mod-card h3{font-size:13px}
+    .rating{gap:1px}
+    .estrella{font-size:16px}
+}
+
+@media(max-width:360px){
+    .mods-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="imagenes/mango-phon.gif" alt="Mango Phonk" class="logo-img">
+        <span>BloqueMeme 🟩</span>
+        <button class="admin-gear" onclick="abrirAccesoAdmin()" title="Administración">⚙️</button>
+    </div>
+
+    <nav>
+        <a onclick="irInicio()">Inicio</a>
+        <a onclick="irCategorias()">Categorías</a>
+        <a onclick="verFavoritos()">❤️ Favoritos</a>
+    </nav>
+</header>
+
+<main id="inicio">
+
+    <section class="hero">
+        <h1>Bienvenido a <span class="verde">BloqueMeme</span></h1>
+        <p>Tu lugar para descubrir mods de Minecraft.</p>
+    </section>
+
+    <div class="contenido">
+
+        <div class="destacados-grid" id="contenedorDestacados"></div>
+
+        <h2 class="seccion-titulo" id="tituloCategorias">🗂️ Categorías</h2>
+
+        <div class="categorias">
+            <div class="categoria-card" onclick="abrirCategoria('ratas')">
+                <h3>🐀 Mods de Ratas</h3>
+                <p>Descubre mods relacionados con ratas.</p>
+            </div>
+
+            <div class="categoria-card" onclick="abrirCategoria('terror')">
+                <h3>👻 Mods de Terror</h3>
+                <p>Explora mods de terror.</p>
+            </div>
+
+            <div class="categoria-card" onclick="abrirCategoria('ayuda')">
+                <h3>🧪 Mods de Ayuda</h3>
+                <p>Herramientas para mejorar Minecraft.</p>
+            </div>
+        </div>
+
+        <h2 class="seccion-titulo">📢 Novedades</h2>
+
+        <div class="novedades">
+            <div class="novedad">
+                <h3>🟢 ¡BloqueMeme está creciendo!</h3>
+                <p>Estamos agregando nuevos complementos al catálogo.</p>
+            </div>
+
+            <div class="novedad">
+                <h3>🆕 Nuevos complementos</h3>
+                <p>Ya puedes encontrar nuevos mods en sus categorías.</p>
+            </div>
+
+            <div class="novedad">
+                <h3>⭐ ¡Califica los mods!</h3>
+                <p>Deja tu valoración en las tarjetas de los complementos.</p>
+            </div>
+        </div>
+
+        <h2 class="seccion-titulo" style="margin-top:40px">🆕 Últimos agregados</h2>
+        <div class="mods-grid" id="ultimosMods"></div>
+
+        <h2 class="seccion-titulo" style="margin-top:45px">🔎 Explorar catálogo</h2>
+
+        <div class="herramientas">
+            <input class="buscador" id="buscador" type="text"
+                   placeholder="Buscar un mod..." oninput="actualizarCatalogo()">
+
+            <select class="filtro" id="filtroCategoria" onchange="actualizarCatalogo()">
+                <option value="todos">Todas las categorías</option>
+                <option value="ratas">Mods de Ratas</option>
+                <option value="terror">Mods de Terror</option>
+                <option value="ayuda">Mods de Ayuda</option>
+            </select>
+
+            <select class="filtro" id="ordenar" onchange="actualizarCatalogo()">
+                <option value="recientes">Más recientes</option>
+                <option value="nombre">Nombre A-Z</option>
+                <option value="popularidad">Más populares</option>
+            </select>
+        </div>
+
+        <div class="mods-grid" id="catalogoMods"></div>
+        <p class="sin-resultados" id="sinResultados">No encontramos mods con esa búsqueda.</p>
+
+        <section id="seccionFavoritos" style="display:none;margin-top:45px">
+            <h2 class="seccion-titulo">❤️ Mis favoritos</h2>
+            <div class="mods-grid" id="favoritosMods"></div>
+            <p class="sin-resultados" id="sinFavoritos">Todavía no tienes mods favoritos.</p>
+        </section>
+
+    </div>
+</main>
+
+<section class="pagina" id="ratas">
+    <button class="volver" onclick="irInicio()">← Volver</button>
+    <h1>🐀 Mods de Ratas</h1>
+    <div class="mods-grid" id="modsRatas"></div>
+</section>
+
+<section class="pagina" id="terror">
+    <button class="volver" onclick="irInicio()">← Volver</button>
+    <h1>👻 Mods de Terror</h1>
+    <div class="mods-grid" id="modsTerror"></div>
+</section>
+
+<section class="pagina" id="ayuda">
+    <button class="volver" onclick="irInicio()">← Volver</button>
+    <h1>🧪 Mods de Ayuda</h1>
+    <div class="mods-grid" id="modsAyuda"></div>
+</section>
+
+<footer>© 2026 BloqueMeme</footer>
+
+<!-- ACCESO ADMINISTRADOR -->
+
+<div class="modal" id="modalAcceso">
+    <div class="ventana">
+
+        <h2>🔐 Acceso de administrador</h2>
+
+        <p>Solo el creador o los administradores pueden acceder a esta sección.</p>
+
+        <input
+            type="password"
+            id="claveIngresada"
+            class="campo-clave"
+            placeholder="Clave de administrador"
+            onkeydown="if(event.key==='Enter')comprobarClave()"
+        >
+
+        <p class="mensaje-error" id="errorClave"></p>
+
+        <div class="botones-modal">
+            <button class="boton-verde" onclick="comprobarClave()">Entrar</button>
+            <button class="boton-cerrar" onclick="cerrarModal('modalAcceso')">Cancelar</button>
+        </div>
+
+        <!-- ESTA X SOLO CUBRE LA VENTANA DE CONTRASEÑA -->
+
+        <div class="bloqueo-total" id="bloqueoTotal">
+            <div class="bloqueo-x">×</div>
+            <h2>ACCESO BLOQUEADO</h2>
+            <p>Se superó el límite de 10 intentos incorrectos.</p>
+            <p>Podrás volver a intentarlo en:</p>
+            <div id="contadorBloqueo">05:00</div>
+        </div>
+
+    </div>
+</div>
+
+<!-- PANEL ADMINISTRADOR -->
+
+<div class="modal" id="modalAdmin">
+    <div class="ventana">
+
+        <h2>⚙️ Panel de administración</h2>
+        <p>Administra los destacados y agrega nuevos mods a BloqueMeme.</p>
+
+        <span class="admin-etiqueta">⭐ CONFIGURACIÓN DE MODS DESTACADOS</span>
+
+        <div class="admin-opcion">
+            <label>
+                <input type="radio" name="modoDestacado" value="manual">
+                <span>👤 Manual: yo elijo el mod.</span>
+            </label>
+        </div>
+
+        <div class="admin-opcion">
+            <label>
+                <input type="radio" name="modoDestacado" value="automatico">
+                <span>🤖 Automático: la página elige.</span>
+            </label>
+        </div>
+
+        <div class="admin-opcion">
+            <label>
+                <input type="radio" name="modoDestacado" value="ambos">
+                <span>🔥 Ambos: muestra los dos.</span>
+            </label>
+        </div>
+
+        <span class="admin-etiqueta">ELIGE TU MOD DESTACADO</span>
+        <select id="modManual" class="admin-select"></select>
+
+        <button class="boton-verde" onclick="guardarConfiguracionAdmin()">
+            Guardar destacados
+        </button>
+
+        <hr class="admin-separador">
+
+        <span class="admin-etiqueta">➕ AGREGAR UN NUEVO MOD</span>
+
+        <form class="admin-form" id="formNuevoMod" onsubmit="agregarNuevoMod(event)">
+
+            <label>Nombre del mod</label>
+            <input class="campo-admin" id="nuevoNombre" type="text"
+                   placeholder="Ej: Dragon Add-On" required>
+
+            <label>Categoría</label>
+            <select class="admin-select" id="nuevoCategoria" required>
+                <option value="ratas">🐀 Mods de Ratas</option>
+                <option value="terror">👻 Mods de Terror</option>
+                <option value="ayuda">🧪 Mods de Ayuda</option>
+            </select>
+
+            <label>Descripción</label>
+            <textarea class="campo-admin" id="nuevoDescripcion"
+                      placeholder="Describe qué hace el mod..." required></textarea>
+
+            <label>Imagen del mod (URL o ruta)</label>
+            <input class="campo-admin" id="nuevoImagen" type="text"
+                   placeholder="imagenes/mi-mod.jpg" required>
+
+            <label>Enlace de descarga</label>
+            <input class="campo-admin" id="nuevoEnlace" type="url"
+                   placeholder="https://..." required>
+
+            <label>Formato</label>
+            <input class="campo-admin" id="nuevoFormato" type="text"
+                   placeholder="MCADDON, MCPACK, ZIP..." required>
+
+            <label>Tamaño</label>
+            <input class="campo-admin" id="nuevoTamano" type="text"
+                   placeholder="Ej: 25 MB">
+
+            <label>Requisitos</label>
+            <input class="campo-admin" id="nuevoRequisitos" type="text"
+                   placeholder="Ej: Minecraft Bedrock">
+
+            <button class="boton-verde" type="submit"
+                    style="width:100%;margin-top:15px">
+                ➕ Publicar mod en el catálogo
+            </button>
+
+        </form>
+
+        <p class="admin-ayuda">
+            Los mods agregados se guardan en este navegador.
+            Las imágenes deben estar disponibles mediante una URL
+            o dentro de tu carpeta de imágenes.
+        </p>
+
+        <hr class="admin-separador">
+
+        <div class="botones-modal">
+            <button class="boton-cerrar" onclick="cerrarSesionAdmin()">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- BIENVENIDA DEL SITIO -->
+
+<div class="bienvenida" id="bienvenida">
+    <div class="ventana">
+
+        <h2>Bloque<span class="verde">Meme</span></h2>
+        <div class="oficial">✓ SITIO OFICIAL</div>
+
+        <p><strong>¡Bienvenido a BloqueMeme!</strong></p>
+        <p>Estás entrando a la página oficial de BloqueMeme.</p>
+        <p>
+            Ten cuidado con las
+            <strong class="clon">páginas clonadas</strong>
+            que puedan hacerse pasar por nosotros.
+        </p>
+
+        <hr style="border:0;border-top:1px solid #287c3c;margin:18px 0">
+
+        <p><strong>¿Tienes dudas o problemas?</strong></p>
+        <p>Puedes contactarnos en nuestro Discord oficial.</p>
+
+        <div class="botones-modal">
+            <button class="boton-cerrar" onclick="abrirDiscord()">Discord</button>
+            <button class="boton-verde" onclick="continuar()">Continuar →</button>
+        </div>
+
+        <p class="nota">Al continuar, accederás al catálogo de mods.</p>
+
+    </div>
+</div>
+
+<!-- SALUDOS DEL ADMINISTRADOR -->
+
+<div class="saludo-admin" id="saludoAdmin">
+    <div class="saludo-admin-contenido">
+        <div class="saludo-palabra" id="saludoPalabra">¡Bienvenido!</div>
+    </div>
+</div>
+
+<script>
+
+/* CONFIGURACIÓN */
+
+const CLAVE_ADMIN = "CREADOR";
+
+const MAX_INTENTOS_ADMIN = 10;
+const DURACION_BLOQUEO_MS = 5 * 60 * 1000;
+
+let intervaloBloqueo = null;
+
+
+/* MODS INICIALES */
+
+const modsIniciales = [
+
+    {
+        id:"portal",
+        nombre:"Portal Gun Add-On 1.0",
+        categoria:"ratas",
+        imagen:"imagenes/portal-gun.jpg",
+        descripcion:"¡Viaja entre portales y explora Minecraft de una manera diferente!",
+        formato:"MCADDON",
+        tamano:"No especificado",
+        requisitos:"Minecraft Bedrock. Versión exacta por confirmar.",
+        fecha:3,
+        enlace:"https://www.mediafire.com/file/0nt74iodybjszr9/Portal_Gun_Add-On_1.0.mcaddon/file"
+    },
+
+    {
+        id:"backrooms",
+        nombre:"BACKROOMS by XP_games",
+        categoria:"terror",
+        imagen:"imagenes/backrooms.jfif",
+        descripcion:"Explora los misteriosos Backrooms en Minecraft Bedrock.",
+        formato:"MCADDON",
+        tamano:"87 MB",
+        requisitos:"Minecraft Bedrock. Versión exacta por confirmar.",
+        fecha:2,
+        enlace:"https://www.mediafire.com/file/0z5gh55qexo9rg4/BACKROOMS_by_XP_games_%2528latest_version%2529.mcaddon/file"
+    },
+
+    {
+        id:"craftee",
+        nombre:"Craftee Companion v1.2",
+        categoria:"ayuda",
+        imagen:"imagenes/craftee.jfif",
+        descripcion:"¡Lleva a Craftee como compañero en tus aventuras de Minecraft!",
+        formato:"MCADDON",
+        tamano:"No especificado",
+        requisitos:"Minecraft Bedrock. Versión exacta por confirmar.",
+        fecha:1,
+        enlace:"https://www.mediafire.com/file/tjnyvdcsx7en3k6/Craftee_Companion_v1.2_Add-On_%2528addon%2529.mcaddon/file"
+    }
+
+];
+
+
+/* RECUPERAR MODS GUARDADOS */
+
+let modsGuardados = JSON.parse(
+    localStorage.getItem("bm_mods_nuevos") || "[]"
+);
+
+let mods = [...modsIniciales,...modsGuardados];
+
+
+/* CONFIGURACIÓN GUARDADA */
+
+let CONFIG_DESTACADO = JSON.parse(
+    localStorage.getItem("bm_config_destacado") ||
+    '{"modo":"ambos","modManual":"portal"}'
+);
+
+let favoritos = JSON.parse(
+    localStorage.getItem("bm_favoritos") || "[]"
+);
+
+let calificaciones = JSON.parse(
+    localStorage.getItem("bm_calificaciones") || "{}"
+);
+
+let descargas = JSON.parse(
+    localStorage.getItem("bm_descargas") || "{}"
+);
+
+
+/* FUNCIONES DE BLOQUEO */
+
+function obtenerIntentosAdmin(){
+    return Number(
+        localStorage.getItem("bm_admin_intentos") || 0
+    );
+}
+
+function obtenerFinBloqueo(){
+    return Number(
+        localStorage.getItem("bm_admin_bloqueado_hasta") || 0
+    );
+}
+
+function estaBloqueado(){
+    return obtenerFinBloqueo() > Date.now();
+}
+
+
+/* MOSTRAR BLOQUEO DENTRO DE LA VENTANA */
+
+function mostrarBloqueo(){
+
+    const capa = document.getElementById("bloqueoTotal");
+    const contador = document.getElementById("contadorBloqueo");
+
+    if(!estaBloqueado()){
+
+        capa.classList.remove("visible");
+
+        if(obtenerFinBloqueo() > 0){
+            localStorage.removeItem("bm_admin_intentos");
+            localStorage.removeItem("bm_admin_bloqueado_hasta");
+        }
+
+        if(intervaloBloqueo){
+            clearInterval(intervaloBloqueo);
+            intervaloBloqueo = null;
+        }
+
+        return;
+    }
+
+    capa.classList.add("visible");
+
+    function actualizarContador(){
+
+        const restante = Math.max(
+            0,
+            obtenerFinBloqueo() - Date.now()
+        );
+
+        if(restante <= 0){
+
+            clearInterval(intervaloBloqueo);
+            intervaloBloqueo = null;
+
+            localStorage.removeItem("bm_admin_intentos");
+            localStorage.removeItem("bm_admin_bloqueado_hasta");
+
+            capa.classList.remove("visible");
+
+            document.getElementById("errorClave").style.display = "none";
+
+            document.getElementById("claveIngresada").focus();
+
+            return;
+        }
+
+        const minutos = Math.floor(restante / 60000);
+        const segundos = Math.floor((restante % 60000) / 1000);
+
+        contador.textContent =
+            String(minutos).padStart(2,"0") + ":" +
+            String(segundos).padStart(2,"0");
+    }
+
+    actualizarContador();
+
+    if(intervaloBloqueo){
+        clearInterval(intervaloBloqueo);
+    }
+
+    intervaloBloqueo = setInterval(actualizarContador,250);
+}
+
+
+/* ABRIR ACCESO */
+
+function abrirAccesoAdmin(){
+
+    document.getElementById("claveIngresada").value = "";
+
+    document.getElementById("errorClave").style.display = "none";
+
+    document.getElementById("modalAcceso").classList.add("visible");
+
+    mostrarBloqueo();
+
+    if(!estaBloqueado()){
+        document.getElementById("claveIngresada").focus();
+    }
+}
+
+
+/* COMPROBAR CONTRASEÑA */
+
+function comprobarClave(){
+
+    if(estaBloqueado()){
+        mostrarBloqueo();
+        return;
+    }
+
+    const campo = document.getElementById("claveIngresada");
+
+    const ingresada = campo.value;
+
+    if(ingresada === CLAVE_ADMIN){
+
+        localStorage.removeItem("bm_admin_intentos");
+        localStorage.removeItem("bm_admin_bloqueado_hasta");
+
+        cerrarModal("modalAcceso");
+
+        mostrarSaludoAdmin();
+
+    }else{
+
+        let intentos = obtenerIntentosAdmin() + 1;
+
+        localStorage.setItem(
+            "bm_admin_intentos",
+            String(intentos)
+        );
+
+        campo.value = "";
+
+        const error = document.getElementById("errorClave");
+
+        error.textContent =
+            "❌ Contraseña incorrecta. Intento " +
+            intentos + " de " + MAX_INTENTOS_ADMIN + ".";
+
+        error.style.display = "block";
+
+        if(intentos >= MAX_INTENTOS_ADMIN){
+
+            localStorage.setItem(
+                "bm_admin_bloqueado_hasta",
+                String(Date.now() + DURACION_BLOQUEO_MS)
+            );
+
+            error.style.display = "none";
+
+            mostrarBloqueo();
+        }
+    }
+}
+
+
+/* SALUDOS: BIENVENIDO Y CREADOR */
+
+function mostrarSaludoAdmin(){
+
+    const fondo = document.getElementById("saludoAdmin");
+    const palabra = document.getElementById("saludoPalabra");
+
+    fondo.classList.add("visible");
+
+    palabra.textContent = "¡Bienvenido!";
+    palabra.classList.add("visible");
+
+    setTimeout(()=>{
+
+        palabra.classList.remove("visible");
+
+        setTimeout(()=>{
+
+            palabra.textContent = "¡Creador!";
+            palabra.classList.add("visible");
+
+        },850);
+
+    },1600);
+
+    setTimeout(()=>{
+
+        palabra.classList.remove("visible");
+        fondo.classList.remove("visible");
+
+        setTimeout(()=>{
+            abrirPanelAdmin();
+        },850);
+
+    },3900);
+}
+
+
+/* PANEL ADMINISTRADOR */
+
+function abrirPanelAdmin(){
+
+    cargarOpcionesMods();
+
+    document.querySelectorAll(
+        'input[name="modoDestacado"]'
+    ).forEach(radio=>{
+
+        radio.checked = radio.value === CONFIG_DESTACADO.modo;
+
+    });
+
+    document.getElementById("modManual").value =
+        CONFIG_DESTACADO.modManual;
+
+    document.getElementById("modalAdmin").classList.add("visible");
+}
+
+
+/* CARGAR MODS EN SELECTOR */
+
+function cargarOpcionesMods(){
+
+    const selector = document.getElementById("modManual");
+
+    selector.innerHTML = mods.map(mod=>`
+        <option value="${mod.id}">${escaparHTML(mod.nombre)}</option>
+    `).join("");
+}
+
+
+/* GUARDAR DESTACADOS */
+
+function guardarConfiguracionAdmin(){
+
+    const seleccionado = document.querySelector(
+        'input[name="modoDestacado"]:checked'
+    );
+
+    if(!seleccionado){
+        alert("Selecciona un modo de destacados.");
+        return;
+    }
+
+    CONFIG_DESTACADO.modo = seleccionado.value;
+
+    CONFIG_DESTACADO.modManual =
+        document.getElementById("modManual").value;
+
+    localStorage.setItem(
+        "bm_config_destacado",
+        JSON.stringify(CONFIG_DESTACADO)
+    );
+
+    actualizarDestacados();
+
+    alert("¡Configuración de destacados guardada!");
+}
+
+
+/* ESCAPAR TEXTO PARA LAS TARJETAS */
+
+function escaparHTML(texto){
+
+    return String(texto).replace(/[&<>"']/g,caracter=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    })[caracter]);
+}
+
+
+/* AGREGAR NUEVO MOD */
+
+function agregarNuevoMod(event){
+
+    event.preventDefault();
+
+    const nombre = document.getElementById("nuevoNombre").value.trim();
+
+    const categoria = document.getElementById("nuevoCategoria").value;
+
+    const descripcion = document.getElementById("nuevoDescripcion").value.trim();
+
+    const imagen = document.getElementById("nuevoImagen").value.trim();
+
+    const enlace = document.getElementById("nuevoEnlace").value.trim();
+
+    const formato = document.getElementById("nuevoFormato").value.trim();
+
+    const tamano =
+        document.getElementById("nuevoTamano").value.trim() ||
+        "No especificado";
+
+    const requisitos =
+        document.getElementById("nuevoRequisitos").value.trim() ||
+        "Minecraft Bedrock";
+
+    if(!nombre || !descripcion || !imagen || !enlace || !formato){
+        alert("Completa los campos obligatorios.");
+        return;
+    }
+
+    const id = "mod_" + Date.now();
+
+    const nuevoMod = {
+        id,
+        nombre,
+        categoria,
+        descripcion,
+        imagen,
+        enlace,
+        formato,
+        tamano,
+        requisitos,
+        fecha:Date.now()
+    };
+
+    mods.push(nuevoMod);
+    modsGuardados.push(nuevoMod);
+
+    localStorage.setItem(
+        "bm_mods_nuevos",
+        JSON.stringify(modsGuardados)
+    );
+
+    document.getElementById("formNuevoMod").reset();
+
+    cargarOpcionesMods();
+
+    actualizarTodo();
+
+    alert("¡Nuevo mod agregado correctamente a BloqueMeme!");
+}
+
+
+/* CERRAR PANEL */
+
+function cerrarSesionAdmin(){
+    cerrarModal("modalAdmin");
+}
+
+function cerrarModal(id){
+    document.getElementById(id).classList.remove("visible");
+}
+
+
+/* TARJETAS */
+
+function crearTarjeta(mod){
+
+    const favorito = favoritos.includes(mod.id);
+
+    const estrellas = Number(calificaciones[mod.id] || 0);
+
+    const cantidadClics = Number(descargas[mod.id] || 0);
+
+    let estrellasHTML = "";
+
+    for(let i=1;i<=5;i++){
+
+        estrellasHTML += `
+            <button class="estrella ${i<=estrellas?"seleccionada":""}"
+                onclick="calificar('${mod.id}',${i})"
+                aria-label="Calificar con ${i} estrellas">★</button>
+        `;
+    }
+
+    return `
+        <article class="mod-card">
+
+            <img class="mod-imagen"
+                src="${escaparHTML(mod.imagen)}"
+                alt="${escaparHTML(mod.nombre)}"
+                loading="lazy">
+
+            <h3>${escaparHTML(mod.nombre)}</h3>
+
+            <p>${escaparHTML(mod.descripcion)}</p>
+
+            <p class="mod-meta">📦 Formato: ${escaparHTML(mod.formato)}</p>
+
+            <p class="mod-meta">📁 Tamaño: ${escaparHTML(mod.tamano)}</p>
+
+            <p class="mod-meta">📋 ${escaparHTML(mod.requisitos)}</p>
+
+            <p class="mod-meta">📊 Clics en descargar: ${cantidadClics}</p>
+
+            <div class="rating">
+                ${estrellasHTML}
+                <span class="rating-texto">
+                    ${estrellas?estrellas+"/5":"Sin valorar"}
+                </span>
+            </div>
+
+            <button class="favorito ${favorito?"activo":""}"
+                onclick="alternarFavorito('${mod.id}')">
+
+                ${favorito?"♥ En favoritos":"♡ Añadir a favoritos"}
+
+            </button>
+
+            <a class="descargar"
+                href="${escaparHTML(mod.enlace)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick="registrarDescarga('${mod.id}')">
+
+                DESCARGAR
+
+            </a>
+
+        </article>
+    `;
+}
+
+
+/* DESTACADOS */
+
+function obtenerModAutomatico(){
+
+    const candidatos = mods.filter(
+        mod=>mod.id !== CONFIG_DESTACADO.modManual
+    );
+
+    const lista = candidatos.length ? candidatos : [...mods];
+
+    lista.sort((a,b)=>{
+
+        const clicsA = Number(descargas[a.id] || 0);
+        const clicsB = Number(descargas[b.id] || 0);
+
+        if(clicsB !== clicsA){
+            return clicsB-clicsA;
+        }
+
+        const notaA = Number(calificaciones[a.id] || 0);
+        const notaB = Number(calificaciones[b.id] || 0);
+
+        if(notaB !== notaA){
+            return notaB-notaA;
+        }
+
+        return b.fecha-a.fecha;
+    });
+
+    return lista[0] || null;
+}
+
+
+function crearDestacado(mod,etiqueta){
+
+    if(!mod) return "";
+
+    return `
+        <article class="destacado">
+
+            <img src="${escaparHTML(mod.imagen)}"
+                 alt="${escaparHTML(mod.nombre)}">
+
+            <div class="destacado-info">
+
+                <span class="etiqueta">${etiqueta}</span>
+
+                <h3>${escaparHTML(mod.nombre)}</h3>
+
+                <p>${escaparHTML(mod.descripcion)}</p>
+
+                <button class="volver"
+                    onclick="abrirCategoria('${mod.categoria}')">
+
+                    Ver mod →
+
+                </button>
+
+            </div>
+        </article>
+    `;
+}
+
+
+function actualizarDestacados(){
+
+    const contenedor =
+        document.getElementById("contenedorDestacados");
+
+    const manual = mods.find(
+        mod=>mod.id===CONFIG_DESTACADO.modManual
+    );
+
+    const automatico = obtenerModAutomatico();
+
+    if(CONFIG_DESTACADO.modo==="manual"){
+
+        contenedor.innerHTML =
+            crearDestacado(manual,"★ ELEGIDO POR BLOQUEMEME");
+
+    }else if(CONFIG_DESTACADO.modo==="automatico"){
+
+        contenedor.innerHTML =
+            crearDestacado(automatico,"🔥 DESTACADO AUTOMÁTICO");
+
+    }else{
+
+        contenedor.innerHTML =
+            crearDestacado(manual,"★ ELEGIDO POR BLOQUEMEME")+
+            crearDestacado(automatico,"🔥 MÁS POPULAR");
+    }
+}
+
+
+/* MOSTRAR MODS */
+
+function mostrarMods(lista,elemento){
+
+    document.getElementById(elemento).innerHTML =
+        lista.map(crearTarjeta).join("");
+}
+
+
+/* CATÁLOGO */
+
+function actualizarCatalogo(){
+
+    const busqueda =
+        document.getElementById("buscador").value.toLowerCase();
+
+    const categoria =
+        document.getElementById("filtroCategoria").value;
+
+    const orden =
+        document.getElementById("ordenar").value;
+
+    let lista = mods.filter(mod=>{
+
+        const coincideNombre =
+            mod.nombre.toLowerCase().includes(busqueda);
+
+        const coincideCategoria =
+            categoria==="todos" || mod.categoria===categoria;
+
+        return coincideNombre && coincideCategoria;
+    });
+
+    if(orden==="nombre"){
+        lista.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+    }
+
+    if(orden==="recientes"){
+        lista.sort((a,b)=>b.fecha-a.fecha);
+    }
+
+    if(orden==="popularidad"){
+        lista.sort((a,b)=>
+            (descargas[b.id]||0)-(descargas[a.id]||0)
+        );
+    }
+
+    mostrarMods(lista,"catalogoMods");
+
+    document.getElementById("sinResultados").style.display =
+        lista.length?"none":"block";
+}
+
+
+/* FAVORITOS */
+
+function alternarFavorito(id){
+
+    if(favoritos.includes(id)){
+
+        favoritos = favoritos.filter(item=>item!==id);
+
+    }else{
+
+        favoritos.push(id);
+
+    }
+
+    localStorage.setItem(
+        "bm_favoritos",
+        JSON.stringify(favoritos)
+    );
+
+    actualizarTodo();
+}
+
+
+function verFavoritos(){
+
+    irInicio();
+
+    document.getElementById("seccionFavoritos").style.display = "block";
+
+    actualizarFavoritos();
+
+    document.getElementById("seccionFavoritos").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+
+function actualizarFavoritos(){
+
+    const lista = mods.filter(
+        mod=>favoritos.includes(mod.id)
+    );
+
+    mostrarMods(lista,"favoritosMods");
+
+    document.getElementById("sinFavoritos").style.display =
+        lista.length?"none":"block";
+}
+
+
+/* CALIFICACIONES */
+
+function calificar(id,valor){
+
+    calificaciones[id] = valor;
+
+    localStorage.setItem(
+        "bm_calificaciones",
+        JSON.stringify(calificaciones)
+    );
+
+    actualizarTodo();
+}
+
+
+/* DESCARGAS */
+
+function registrarDescarga(id){
+
+    descargas[id] = Number(descargas[id]||0)+1;
+
+    localStorage.setItem(
+        "bm_descargas",
+        JSON.stringify(descargas)
+    );
+
+    actualizarTodo();
+}
+
+
+/* ACTUALIZAR TODA LA PÁGINA */
+
+function actualizarTodo(){
+
+    actualizarDestacados();
+
+    actualizarCatalogo();
+
+    actualizarFavoritos();
+
+    mostrarMods(
+        mods.filter(mod=>mod.categoria==="ratas"),
+        "modsRatas"
+    );
+
+    mostrarMods(
+        mods.filter(mod=>mod.categoria==="terror"),
+        "modsTerror"
+    );
+
+    mostrarMods(
+        mods.filter(mod=>mod.categoria==="ayuda"),
+        "modsAyuda"
+    );
+
+    const recientes = [...mods]
+        .sort((a,b)=>b.fecha-a.fecha)
+        .slice(0,3);
+
+    mostrarMods(recientes,"ultimosMods");
+}
+
+
+/* NAVEGACIÓN */
+
+function abrirCategoria(nombre){
+
+    document.getElementById("inicio").style.display = "none";
+
+    document.querySelectorAll(".pagina").forEach(pagina=>{
+        pagina.classList.remove("activa");
+    });
+
+    document.getElementById(nombre).classList.add("activa");
+
+    window.scrollTo(0,0);
+}
+
+
+function irInicio(){
+
+    document.querySelectorAll(".pagina").forEach(pagina=>{
+        pagina.classList.remove("activa");
+    });
+
+    document.getElementById("inicio").style.display = "block";
+
+    document.getElementById("seccionFavoritos").style.display = "none";
+
+    window.scrollTo(0,0);
+}
+
+
+function irCategorias(){
+
+    irInicio();
+
+    document.getElementById("tituloCategorias").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+
+/* BIENVENIDA */
+
+function continuar(){
+
+    document.getElementById("bienvenida").style.display = "none";
+}
+
+
+function abrirDiscord(){
+
+    alert("Aquí pondremos el enlace de tu Discord oficial.");
+}
+
+
+/* INICIAR */
+
+actualizarTodo();
+
+cargarOpcionesMods();
+
+mostrarBloqueo();
+
+</script>
+
+</body>
+</html>
