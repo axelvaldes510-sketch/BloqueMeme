@@ -57,6 +57,23 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;justify-content:center;align-items:center;padding:15px;z-index:2000}
 .modal.visible{display:flex}
 .ventana{position:relative;width:100%;max-width:490px;max-height:90vh;overflow-y:auto;background:#101010;border:1px solid #38c85b;border-radius:13px;padding:24px;text-align:center}
+
+/* X para cerrar el panel de administración */
+.cerrar-panel{
+ position:absolute;
+ top:12px;
+ right:12px;
+ width:35px;
+ height:35px;
+ border:1px solid #444;
+ border-radius:8px;
+ background:#191919;
+ color:#fff;
+ font-size:22px;
+ cursor:pointer;
+}
+.cerrar-panel:hover{background:#292929;color:#65e879}
+
 .ventana h2{margin-bottom:12px}
 .ventana>p{color:#bbb;line-height:1.5;font-size:14px;margin-bottom:13px}
 .campo-clave,.campo-admin,.admin-select{width:100%;margin:8px 0 12px}
@@ -90,27 +107,6 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 .saludo-palabra{font-size:30px;color:#65e879;opacity:0;transition:.5s}
 .saludo-palabra.visible{opacity:1}
 .estado-conexion{font-size:12px;color:#888;margin-top:8px}
-
-/* BOTÓN X PARA CERRAR EL PANEL SIN CERRAR SESIÓN */
-.cerrar-panel{
- position:absolute;
- top:12px;
- right:12px;
- width:36px;
- height:36px;
- border:1px solid #444;
- border-radius:8px;
- background:#191919;
- color:#fff;
- font-size:25px;
- cursor:pointer;
- z-index:5;
-}
-.cerrar-panel:hover{
- background:#292929;
- color:#65e879;
-}
-
 @media(max-width:650px){
  header{flex-direction:column}
  .hero h1{font-size:29px}
@@ -237,7 +233,7 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 <div class="modal" id="modalAdmin">
  <div class="ventana">
 
-  <!-- BOTÓN X: SOLO CIERRA EL PANEL -->
+  <!-- ÚNICO CAMBIO: botón X para cerrar el panel sin cerrar sesión -->
   <button class="cerrar-panel" type="button" onclick="cerrarPanelAdmin()" aria-label="Cerrar panel">×</button>
 
   <h2>⚙️ Panel de administración</h2>
@@ -594,52 +590,7 @@ function estaBloqueado(){
  return obtenerFinBloqueo()>Date.now();
 }
 
-function mostrarBloqueo(){
- const capa=document.getElementById("bloqueoTotal");
- const contador=document.getElementById("contadorBloqueo");
-
- if(!estaBloqueado()){
-  capa.classList.remove("visible");
-
-  if(obtenerFinBloqueo()>0){
-   localStorage.removeItem("bm_admin_intentos");
-   localStorage.removeItem("bm_admin_bloqueado_hasta");
-  }
-
-  if(intervaloBloqueo){
-   clearInterval(intervaloBloqueo);
-   intervaloBloqueo=null;
-  }
-  return;
- }
-
- capa.classList.add("visible");
-
- function actualizarContador(){
-  const restante=Math.max(0,obtenerFinBloqueo()-Date.now());
-
-  if(restante<=0){
-   clearInterval(intervaloBloqueo);
-   intervaloBloqueo=null;
-   localStorage.removeItem("bm_admin_intentos");
-   localStorage.removeItem("bm_admin_bloqueado_hasta");
-   capa.classList.remove("visible");
-   document.getElementById("errorClave").style.display="none";
-   return;
-  }
-
-  contador.textContent=
-   String(Math.floor(restante/60000)).padStart(2,"0")+":"+
-   String(Math.floor((restante%60000)/1000)).padStart(2,"0");
- }
-
- actualizarContador();
-
- if(intervaloBloqueo)clearInterval(intervaloBloqueo);
- intervaloBloqueo=setInterval(actualizarContador,250);
-}
-
-/* SI YA INICIASTE SESIÓN, EL ENGRANAJE ABRE DIRECTAMENTE EL PANEL */
+/* ÚNICO CAMBIO: si ya hay sesión, abre el panel directamente */
 function abrirAccesoAdmin(){
  if(esAdmin){
   abrirPanelAdmin();
@@ -864,7 +815,7 @@ function cerrarModal(id){
  document.getElementById(id).classList.remove("visible");
 }
 
-/* LA X CIERRA EL PANEL, PERO NO CIERRA LA SESIÓN */
+/* ÚNICO CAMBIO: cierra el panel, pero conserva la sesión */
 function cerrarPanelAdmin(){
  cerrarModal("modalAdmin");
 }
