@@ -90,6 +90,26 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 .saludo-palabra{font-size:30px;color:#65e879;opacity:0;transition:.5s}
 .saludo-palabra.visible{opacity:1}
 .estado-conexion{font-size:12px;color:#888;margin-top:8px}
+
+/* NUEVO: botón X para cerrar el panel sin cerrar sesión */
+.cerrar-panel{
+ position:absolute;
+ top:12px;
+ right:12px;
+ width:36px;
+ height:36px;
+ border:1px solid #444;
+ border-radius:8px;
+ background:#191919;
+ color:#fff;
+ font-size:25px;
+ line-height:1;
+ cursor:pointer;
+ z-index:5;
+}
+.cerrar-panel:hover{background:#a52828;border-color:#ff5555}
+#modalAdmin .ventana>h2{padding-right:35px}
+
 @media(max-width:650px){
  header{flex-direction:column}
  .hero h1{font-size:29px}
@@ -215,6 +235,10 @@ footer{background:#080808;border-top:1px solid #222;text-align:center;padding:25
 
 <div class="modal" id="modalAdmin">
  <div class="ventana">
+
+  <!-- NUEVO: X que solo cierra el panel -->
+  <button class="cerrar-panel" onclick="cerrarPanelAdmin()" aria-label="Cerrar panel" title="Cerrar panel">×</button>
+
   <h2>⚙️ Panel de administración</h2>
   <p>Administra los mods y los destacados de BloqueMeme.</p>
 
@@ -321,10 +345,7 @@ let favoritos=JSON.parse(localStorage.getItem("bm_favoritos")||"[]");
 let calificaciones=JSON.parse(localStorage.getItem("bm_calificaciones")||"{}");
 let descargas=JSON.parse(localStorage.getItem("bm_descargas")||"{}");
 
-/* IMPORTANTE:
-   La carpeta real se llama "Imágenes", con tilde.
-   GitHub necesita la ruta codificada como Im%C3%A1genes.
-*/
+/* La carpeta real se llama Imágenes, con tilde. */
 function normalizarRutaImagen(ruta){
  let valor=String(ruta||"").trim();
  if(!valor)return "";
@@ -389,10 +410,7 @@ function convertirMod(row){
 }
 
 async function cargarMods(){
- const {data,error}=await supabaseClient
-  .from("mods")
-  .select("*")
-  .order("creado_en",{ascending:false});
+ const {data,error}=await supabaseClient.from("mods").select("*").order("creado_en",{ascending:false});
 
  if(error){
   console.error(error);
@@ -402,7 +420,6 @@ async function cargarMods(){
 
  mods=(data||[]).map(convertirMod);
  actualizarTodo();
-
  document.getElementById("estadoConexion").textContent="🟢 Catálogo conectado y actualizado.";
 
  if(esAdmin){
@@ -421,11 +438,7 @@ async function cargarModsInicialesSiHaceFalta(){
 }
 
 async function cargarConfiguracionDestacados(){
- const {data,error}=await supabaseClient
-  .from("site_config")
-  .select("*")
-  .eq("id",1)
-  .maybeSingle();
+ const {data,error}=await supabaseClient.from("site_config").select("*").eq("id",1).maybeSingle();
 
  if(error){
   console.error(error);
@@ -614,7 +627,13 @@ function mostrarBloqueo(){
  intervaloBloqueo=setInterval(actualizarContador,250);
 }
 
+/* NUEVO: si ya tienes sesión, el engranaje abre el panel directamente. */
 function abrirAccesoAdmin(){
+ if(esAdmin){
+  abrirPanelAdmin();
+  return;
+ }
+
  document.getElementById("claveIngresada").value="";
  document.getElementById("errorClave").style.display="none";
  document.getElementById("modalAcceso").classList.add("visible");
@@ -663,6 +682,11 @@ function abrirPanelAdmin(){
  document.getElementById("modManual").value=CONFIG_DESTACADO.modManual;
  mostrarListaAdmin();
  document.getElementById("modalAdmin").classList.add("visible");
+}
+
+/* NUEVO: la X solo oculta el panel; NO cierra la sesión. */
+function cerrarPanelAdmin(){
+ document.getElementById("modalAdmin").classList.remove("visible");
 }
 
 function cargarOpcionesMods(){
@@ -1031,7 +1055,7 @@ function abrirDiscord(){
 }
 
 /* El catálogo se carga para todos los visitantes, sin iniciar sesión.
-   Cerrar la sesión de administrador NO borra los mods de Supabase. */
+   Cerrar el panel con X no cierra la sesión ni borra los mods. */
 async function iniciarPagina(){
  actualizarTodo();
  mostrarBloqueo();
